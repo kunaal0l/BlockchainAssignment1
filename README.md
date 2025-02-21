@@ -12,62 +12,58 @@
 ---
 
 ## Overview
-This repository contains a Python implementation of a peer-to-peer chat application using TCP sockets and multithreading. The application enables users to send and receive messages simultaneously, maintain an active peer list, and establish connections dynamically.  
+This repository contains a Python-based peer-to-peer chat application using **TCP sockets** and **multithreading**. The application enables users to:
+- Send and receive messages simultaneously.
+- Maintain a dynamic list of active peers.
+- Establish direct connections with other peers.
+- Gracefully handle peer disconnections.
 
-The program ensures reliable communication by utilizing a message format that includes the sender’s IP, port, team name, and the actual message. Fixed port numbers are assumed for all users, entered at startup to avoid duplicate entries for the same peer.
+The system assumes fixed port numbers for each user, entered at startup. This prevents duplicate entries for the same peer and ensures smooth communication. Messages follow a standardized format, including sender IP, port, team name, and content.
 
-Our code also **handles the bonus requirement** by allowing users to initiate connections with active peers that have not yet been contacted.
+Our implementation **includes the bonus feature**, allowing users to establish connections with active peers that have not yet been contacted.
 
 ---
 
 ## Implementation Details
 
-### 1. Maintaining Active Peers List
-The application maintains a dynamic set of active peers (peers that are available and eligible for connection). Each peer is stored as an (IP, PORT) tuple. The peer list is updated based on received messages:  
-- If a message is received from a new peer, it is added to the list automatically.  
-- If a peer sends a **"connect"** message, they are explicitly marked as connected.  
-- If a peer sends an **"exit"** message, they are removed from the list.  
-- If the user quits, the **"exit"** message is sent to all peers before termination.
+### 1. Active Peer Management
+The application maintains a **dictionary of active peers**, where each entry is stored as an `(IP, PORT) -> Team Name` mapping. The peer list is updated dynamically:
+- If a message is **received from a new peer**, it is added to the list.
+- If a **'connect'** message is received, the sender is marked as connected.
+- If a **'exit'** message is received, the sender is removed from the list.
+- If the user **quits**, an **'exit'** message is sent to all peers before termination.
 
-### 2. Connection Management
-Each peer's connection status is dynamically tracked. Users can manually initiate a connection by selecting from the active peers list. A connection message **"connect"** is sent to notify the selected peer.
-
-### 3. Server & Listener Thread
-A dedicated server thread listens for incoming messages and updates the active peer list accordingly. The server runs on the specified port, allowing real-time message handling and event-based notifications:
-- New peer detection and addition.
-- Connection confirmation when a **"connect"** message is received.
-- Notification of incoming messages.
-- Automatic peer removal on **"exit"** messages.
-
----
-
-## Customizations
-
-### 1. Initial Peer Discovery
-The program includes a predefined list of **mandatory peers** to whom a **"hello"** message is sent at startup. This can be modified in the `mandatory_peers` list in the script.
-
-### 2. Message Format
-All messages follow the format:
+### 2. Message Handling
+Each message follows a **standard format**:
 ```txt
 <sender_ip>:<sender_port> <team_name> <message>
 ```
-This format ensures that messages can be tracked and processed correctly by all peers.
+This ensures that all peers can properly interpret incoming messages and track sender information.
+
+A dedicated **server thread** listens for incoming messages and automatically updates the active peers list. It also handles peer disconnections and message notifications.
+
+### 3. Connecting to Peers
+The user can manually initiate a connection to any peer in the active peer list by selecting from the menu. A **'connect'** message is sent to formally establish a connection.
+
+### 4. Predefined Peer Discovery
+At startup, the application sends a **'hello'** message to a predefined list of peers (`mandatory_peers`). This ensures that users can establish an initial set of connections automatically.
 
 ---
 
-## How to Run?
-1. Ensure you have **Python 3.x** installed on your system.
+## How to Run
+
+1. Ensure **Python 3.x** is installed on your system.
 2. Run the script using:
    ```sh
    python script.py
    ```
 3. Enter your **name** and **port number** when prompted.
 4. The server starts listening for incoming connections automatically.
-5. Use the menu to:
-   - **Send messages** to a specific peer by entering their IP and port.
-   - **Query active peers** currently known to the system.
-   - **Connect to a peer** to establish a formal connection.
-   - **Exit**, which sends an **"exit"** message to all peers before quitting.
+5. Use the menu options to interact with peers:
+   - **Send a message** to any peer.
+   - **View active peers** currently known to the system.
+   - **Connect to a peer** by selecting from the list.
+   - **Exit**, which sends an **'exit'** message to all peers before quitting.
 
 ---
 
