@@ -2,7 +2,7 @@
 
 ## Team Details
 
-**Team Name**: XYZ
+**Team Name**: Xyz
 
 **Team Members**:
 - Kunal Gourv (230002036)
