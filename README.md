@@ -20,7 +20,7 @@ This repository contains a Python-based peer-to-peer chat application using **TC
 
 The system assumes fixed port numbers for each user, entered at startup. This prevents duplicate entries for the same peer and ensures smooth communication. Messages follow a standardized format, including sender IP, port, team name, and content.
 
-Our implementation **includes the bonus feature**, allowing users to establish connections with active peers that have not yet been contacted.
+Our implementation **includes the bonus feature**, allowing users to establish connections with active peers.
 
 ---
 
@@ -45,8 +45,7 @@ A dedicated **server thread** listens for incoming messages and automatically up
 ### 3. Connecting to Peers
 The user can manually initiate a connection to any peer in the active peer list by selecting from the menu. A **'connect'** message is sent to formally establish a connection.
 
-### 4. Predefined Peer Discovery
-At startup, the application sends a **'hello'** message to a predefined list of peers (`mandatory_peers`). This ensures that users can establish an initial set of connections automatically.
+
 
 ---
 
